@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mappa</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="script/leaflet/leaflet.css" type="text/css" />
+    
+    <script type="text/javascript" src="script/leaflet/leaflet-src.js"></script>
+
+</head>
+<body >
+    <style>
+        html,body{height:100%}
+        body{ margin: 0}
+        #mapid { min-height : 100%;margin: 0 auto; }
+    </style>
+    
+    <div id="mapid"></div>
+    
+    <script type="text/javascript">
+        var mymap = L.map('mapid').setView([41.88451216480288,12.463416520896356], 12);
+        var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+        
+        var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 18, attribution: osmAttrib});
+        mymap.addLayer(osm);
+        var marker = new L.Marker([41.88451216480288,12.463416520896356],{title : 'Centro di Roma'});
+        marker.bindPopup( '<p>Questo è il centro di Roma</p>' );
+       
+        mymap.doubleClickZoom.disable();
+        mymap.addLayer(marker);
+        var layer2 = new L.LayerGroup();
+        
+        var bounds = [[41.90911210198959, 12.462444305419922], [41.897932883580054, 12.442960739135742]];
+        var rectangle = new L.Rectangle(bounds,{color:"#ff7800", weight:3,opacity:0.7,fillOpacity:0.5});
+        layer2.addLayer(rectangle);
+        
+        mymap.addLayer(layer2);
+        
+        setInterval(function(){
+            if (mymap.hasLayer(layer2)){
+                mymap.removeLayer(layer2);
+            }else{
+                mymap.addLayer(layer2);
+            }
+        },1000);
+    </script>
+</body>
+</html>
